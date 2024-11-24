@@ -1,97 +1,128 @@
 #include "matrix.h"
 
-void mat_set_path(bool *mat, char src, char dst) {
-    mat[ADJ_MAT_IDX(src, dst)] = true;
+static inline void add_to_adj_list(cell_t *matrix, char cell, char adj_cell) {
+    matrix[CHAR2INT(cell)].adj_matrix[CHAR2INT(adj_cell)] = true;
 }
 
-bool mat_get_path(bool *mat, char src, char dst) {
-    return mat[ADJ_MAT_IDX(src, dst)];
-}
-
-void mat_init(matrix_t *m) {
-    // Init visited matrix
+void matrix_init(cell_t *matrix) {
+    // Init matrix
     for (int i = 0; i < MAT_SIZE; i++) {
-        m->vis[i] = false;
+        matrix[i].name = INT2CHAR(i);
+        matrix[i].predecessor = -1;
+        matrix[i].visited = false;
+
+        for (int j = 0; j < MAT_SIZE; j++) {
+            matrix[i].adj_matrix[j] = false;
+        }
     }
 
-    // Init adjacence matrix
-    for (int i = 0; i < MAT_SIZE * MAT_SIZE; i++) {
-        m->adj[i] = false;
-    }
-    
     // Define connections
-    mat_set_path(m->adj, 'A', 'B');
-    mat_set_path(m->adj, 'A', 'F');
+    add_to_adj_list(matrix, 'A', 'B');
+    add_to_adj_list(matrix, 'A', 'F');
 
-    mat_set_path(m->adj, 'B', 'A');
+    add_to_adj_list(matrix, 'B', 'A');
 
-    mat_set_path(m->adj, 'C', 'D');
-    mat_set_path(m->adj, 'C', 'H');
+    add_to_adj_list(matrix, 'C', 'D');
+    add_to_adj_list(matrix, 'C', 'H');
 
-    mat_set_path(m->adj, 'D', 'C');
-    mat_set_path(m->adj, 'D', 'E');
+    add_to_adj_list(matrix, 'D', 'C');
+    add_to_adj_list(matrix, 'D', 'E');
 
-    mat_set_path(m->adj, 'E', 'D');
-    mat_set_path(m->adj, 'E', 'J');
+    add_to_adj_list(matrix, 'E', 'D');
+    add_to_adj_list(matrix, 'E', 'J');
 
-    mat_set_path(m->adj, 'F', 'A');
-    mat_set_path(m->adj, 'F', 'G');
+    add_to_adj_list(matrix, 'F', 'A');
+    add_to_adj_list(matrix, 'F', 'G');
 
-    mat_set_path(m->adj, 'G', 'F');
-    mat_set_path(m->adj, 'G', 'H');
+    add_to_adj_list(matrix, 'G', 'F');
+    add_to_adj_list(matrix, 'G', 'H');
 
-    mat_set_path(m->adj, 'H', 'C');
-    mat_set_path(m->adj, 'H', 'G');
-    mat_set_path(m->adj, 'H', 'I');
+    add_to_adj_list(matrix, 'H', 'C');
+    add_to_adj_list(matrix, 'H', 'G');
+    add_to_adj_list(matrix, 'H', 'I');
 
-    mat_set_path(m->adj, 'I', 'H');
-    mat_set_path(m->adj, 'I', 'N');
+    add_to_adj_list(matrix, 'I', 'H');
+    add_to_adj_list(matrix, 'I', 'N');
 
-    mat_set_path(m->adj, 'J', 'E');
+    add_to_adj_list(matrix, 'J', 'E');
 
-    mat_set_path(m->adj, 'K', 'P');
+    add_to_adj_list(matrix, 'K', 'P');
 
-    mat_set_path(m->adj, 'L', 'M');
-    mat_set_path(m->adj, 'L', 'Q');
+    add_to_adj_list(matrix, 'L', 'M');
+    add_to_adj_list(matrix, 'L', 'Q');
 
-    mat_set_path(m->adj, 'M', 'L');
-    mat_set_path(m->adj, 'M', 'N');
-    mat_set_path(m->adj, 'M', 'R');
+    add_to_adj_list(matrix, 'M', 'L');
+    add_to_adj_list(matrix, 'M', 'N');
+    add_to_adj_list(matrix, 'M', 'R');
 
-    mat_set_path(m->adj, 'N', 'I');
-    mat_set_path(m->adj, 'N', 'M');
-    mat_set_path(m->adj, 'N', 'O');
+    add_to_adj_list(matrix, 'N', 'I');
+    add_to_adj_list(matrix, 'N', 'M');
+    add_to_adj_list(matrix, 'N', 'O');
 
-    mat_set_path(m->adj, 'O', 'N');
+    add_to_adj_list(matrix, 'O', 'N');
 
-    mat_set_path(m->adj, 'P', 'K');
-    mat_set_path(m->adj, 'P', 'U');
+    add_to_adj_list(matrix, 'P', 'K');
+    add_to_adj_list(matrix, 'P', 'U');
 
-    mat_set_path(m->adj, 'Q', 'L');
-    mat_set_path(m->adj, 'Q', 'V');
+    add_to_adj_list(matrix, 'Q', 'L');
+    add_to_adj_list(matrix, 'Q', 'V');
 
-    mat_set_path(m->adj, 'R', 'M');
-    mat_set_path(m->adj, 'R', 'S');
+    add_to_adj_list(matrix, 'R', 'M');
+    add_to_adj_list(matrix, 'R', 'S');
 
-    mat_set_path(m->adj, 'S', 'R');
-    mat_set_path(m->adj, 'S', 'T');
+    add_to_adj_list(matrix, 'S', 'R');
+    add_to_adj_list(matrix, 'S', 'T');
 
-    mat_set_path(m->adj, 'T', 'S');
-    mat_set_path(m->adj, 'T', 'Y');
+    add_to_adj_list(matrix, 'T', 'S');
+    add_to_adj_list(matrix, 'T', 'Y');
 
-    mat_set_path(m->adj, 'U', 'P');
-    mat_set_path(m->adj, 'U', 'V');
+    add_to_adj_list(matrix, 'U', 'P');
+    add_to_adj_list(matrix, 'U', 'V');
 
-    mat_set_path(m->adj, 'V', 'Q');
-    mat_set_path(m->adj, 'V', 'U');
-    mat_set_path(m->adj, 'V', 'W');
+    add_to_adj_list(matrix, 'V', 'Q');
+    add_to_adj_list(matrix, 'V', 'U');
+    add_to_adj_list(matrix, 'V', 'W');
 
-    mat_set_path(m->adj, 'W', 'V');
-    mat_set_path(m->adj, 'W', 'X');
+    add_to_adj_list(matrix, 'W', 'V');
+    add_to_adj_list(matrix, 'W', 'X');
 
-    mat_set_path(m->adj, 'X', 'W');
-    mat_set_path(m->adj, 'X', 'Y');
+    add_to_adj_list(matrix, 'X', 'W');
+    add_to_adj_list(matrix, 'X', 'Y');
 
-    mat_set_path(m->adj, 'Y', 'T');
-    mat_set_path(m->adj, 'Y', 'X');
+    add_to_adj_list(matrix, 'Y', 'T');
+    add_to_adj_list(matrix, 'Y', 'X');
+}
+
+void matrix_print_path(const cell_t *matrix) {
+    printf("Reconstructing path...\n");
+    char path[MAT_SIZE];
+    int path_idx = 0;
+    char current = GOAL_CELL;
+
+    if (matrix[CHAR2INT(current)].predecessor == -1) {
+        printf("Goal cell %c is unreachable\n", GOAL_CELL);
+        return;
+    }
+
+    while (current != START_CELL) {
+        path[path_idx++] = current;
+        
+        int current_idx = CHAR2INT(current);
+        
+        int pred = matrix[current_idx].predecessor;
+        if (pred == -1) {
+            printf("No predecessor for %c, path reconstruction failed\n", current);
+            return;
+        }
+
+        current = INT2CHAR(pred);
+    }
+
+    path[path_idx++] = START_CELL;
+
+    printf("Path found: ");
+    for (int i = path_idx - 1; i >= 0; i--) {
+        printf("%c ", path[i]);
+    }
+    printf("\n");
 }

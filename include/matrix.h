@@ -1,29 +1,18 @@
-#ifndef MATRIX_H
-#define MATRIX_H
+#ifndef CELL_H
+#define CELL_H
 
+#include <stdio.h>
 #include <stdbool.h>
+#include "util.h"
 
-#define MAT_SIZE 25
+typedef struct {
+    char name;
+    int predecessor;
+    bool visited;
+    bool adj_matrix[MAT_SIZE];
+} cell_t;
 
-#define CELL_IDX(x) ((x) - 'A')
-#define CELL_NAME(x) ((x) + 'A')
-#define ADJ_MAT_IDX(src, dst) (MAT_SIZE * (src) + (dst))
+void matrix_init(cell_t *matrix);
+void matrix_print_path(const cell_t *matrix);
 
-typedef struct matrix_s matrix_t;
-typedef struct player_s player_t;
-
-struct matrix_s {
-    bool adj[MAT_SIZE * MAT_SIZE]; // adjacency matrix
-    bool vis[MAT_SIZE]; // visited cells
-    // char curr; // current cell
-};
-
-// struct player_s {
-//     char pos;
-// };
-
-void mat_init(matrix_t *m);
-void mat_set_path(bool *mat, char src, char dst);
-bool mat_get_path(bool *mat, char src, char dst);
-
-#endif // MATRIX_H
+#endif // CELL_H

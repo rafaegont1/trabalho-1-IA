@@ -1,8 +1,7 @@
-#include "stack.h"
+#include "data_struct/stack.h"
 
 #include <stdlib.h>
 #include <assert.h>
-// #include "malloc_dbg.h"
 
 bool stack_empty(stack_t *s) {
     return s->top == NULL;
@@ -14,7 +13,7 @@ void stack_init(stack_t *s) {
 }
 
 void stack_deinit(stack_t *s) {
-    stack_node_t *rm;
+    node_t *rm;
 
     while (!stack_empty(s)) {
         rm = s->top;
@@ -23,29 +22,27 @@ void stack_deinit(stack_t *s) {
     }
 }
 
-void stack_set(stack_t *s, char new_cell) {
-    stack_node_t *new_node = (stack_node_t *)malloc(sizeof(stack_node_t));
-    stack_node_t *prev_top = s->top;
+void stack_set(stack_t *s, int data) {
+    node_t *new_node = (node_t *)malloc(sizeof(node_t));
 
-    new_node->cell = new_cell;
+    new_node->data = data;
+    new_node->next = s->top;
 
     s->top = new_node;
-    new_node->next = prev_top;
 
     s->nodes_allocated++;
 }
 
-char stack_pop(stack_t *s) {
-    char top_cell;
-    stack_node_t *rm;
-
+int stack_pop(stack_t *s) {
     assert(!stack_empty(s));
 
-    rm = s->top;
-    top_cell = rm->cell;
+    int popped_data;
+    node_t *rm = s->top;
+
+    popped_data = rm->data;
     s->top = rm->next;
 
     free(rm);
 
-    return top_cell;
+    return popped_data;
 }

@@ -1,8 +1,7 @@
-#include "queue.h"
+#include "data_struct/queue.h"
 
 #include <stdlib.h>
 #include <assert.h>
-// #include "malloc_dbg.h"
 
 bool queue_empty(queue_t *q) {
     return q->first == NULL;
@@ -14,7 +13,7 @@ void queue_init(queue_t *q) {
 }
 
 void queue_deinit(queue_t *q) {
-    queue_node_t *rm;
+    node_t *rm;
 
     while (!queue_empty(q)) {
         rm = q->first;
@@ -23,16 +22,16 @@ void queue_deinit(queue_t *q) {
     }
 }
 
-void queue_set(queue_t *q, char new_cell) {
-    queue_node_t *new_node = (queue_node_t *)malloc(sizeof(queue_node_t));
+void queue_set(queue_t *q, int data) {
+    node_t *new_node = (node_t *)malloc(sizeof(node_t));
 
-    new_node->cell = new_cell;
+    new_node->data = data;
     new_node->next = NULL;
 
     if (queue_empty(q)) {
         q->first = new_node;
     } else {
-        queue_node_t *iter = q->first;
+        node_t *iter = q->first;
 
         while (iter->next != NULL) {
             iter = iter->next;
@@ -44,17 +43,16 @@ void queue_set(queue_t *q, char new_cell) {
     q->nodes_allocated++;
 }
 
-char queue_pop(queue_t *q) {
-    char first_cell;
-    queue_node_t *rm;
-
+int queue_pop(queue_t *q) {
     assert(!queue_empty(q));
 
-    rm = q->first;
-    first_cell = rm->cell;
+    int popped_data;
+    node_t *rm = q->first;
+
+    popped_data = rm->data;
     q->first = rm->next;
 
     free(rm);
 
-    return first_cell;
+    return popped_data;
 }

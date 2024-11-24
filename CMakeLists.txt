@@ -13,20 +13,27 @@ set(CMAKE_C_STANDARD 11)
 # Include headers from the 'include' directory
 include_directories(${CMAKE_SOURCE_DIR}/include)
 
-# Set source files by globbing all .c files in the 'src' directory
-file(GLOB SOURCES "src/*.c")
-
 # Create DFS executable
-add_executable(dfs ${SOURCES})
-target_compile_definitions(dfs PRIVATE DFS)  # Define DFS for the 'dfs' executable
+add_executable(dfs
+    src/main.c
+    src/util.c
+    src/matrix.c
+    src/data_struct/stack.c
+)
+target_compile_definitions(dfs PRIVATE DFS)
 
 # Create BFS executable
-add_executable(bfs ${SOURCES})
-target_compile_definitions(bfs PRIVATE BFS)  # Define BFS for the 'bfs' executable
+add_executable(bfs
+    src/main.c
+    src/util.c
+    src/matrix.c
+    src/data_struct/queue.c
+)
+target_compile_definitions(bfs PRIVATE BFS)
 
 # Add compilation flags (apply to both executables)
-target_compile_options(dfs PRIVATE -Wall -Wextra)  # Apply -Wall -Wextra for 'dfs'
-target_compile_options(bfs PRIVATE -Wall -Wextra)  # Apply -Wall -Wextra for 'bfs'
+target_compile_options(dfs PRIVATE -Wall -Wextra)
+target_compile_options(bfs PRIVATE -Wall -Wextra)
 
 # If you want to ensure that the executables are built in debug/release mode
 # you can add build type specific options:
