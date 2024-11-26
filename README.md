@@ -149,7 +149,10 @@ O menor caminho no labirinto proposto seria o representado na imagem abaixo:
 
 ![image](https://github.com/user-attachments/assets/07a4d470-42b6-4999-b130-9c9381fa9d00)
 
-``A sequência do menor caminho seria: U -> V -> Q -> L -> M -> N -> I-> H -> C -> D -> E``
+###### *Labirinto proposto no trabalho com pequenas modificações para melhor indentificação de posição.*
+
+
+### ``A sequência do menor caminho seria: U -> V -> Q -> L -> M -> N -> I-> H -> C -> D -> E``
 
 O CAMINHO DO **DFS**:
 - U -> V -> W -> X -> Y -> T -> S -> R -> M -> N -> I -> H -> C -> D -> E
